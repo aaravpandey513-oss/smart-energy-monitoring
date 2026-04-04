@@ -39,19 +39,19 @@ const alerts = [
 
 const initialDevices = [
   {
-    id: "DEV-001", name: "Motor – Load 1", status: "normal" as const,
-    voltage: 228, current: 14.2, power: 3240, energy: 18.3,
-    on: true, autoControl: false, costPerHour: 0.42, powerFactor: 0.92,
+    id: "DEV-001", name: "Bulb", status: "normal" as const,
+    voltage: 230, current: 0.4, power: 92, energy: 5.7,
+    on: true, autoControl: false, costPerHour: 0.01, powerFactor: 0.97,
   },
   {
-    id: "DEV-002", name: "Air Conditioner", status: "warning" as const,
-    voltage: 225, current: 8.6, power: 1935, energy: 17.1,
-    on: true, autoControl: true, costPerHour: 0.25, powerFactor: 0.88,
+    id: "DEV-002", name: "Hair Straightener", status: "warning" as const,
+    voltage: 225, current: 8.0, power: 1800, energy: 4.5,
+    on: true, autoControl: true, costPerHour: 0.23, powerFactor: 0.88,
   },
   {
-    id: "DEV-003", name: "Lighting System", status: "normal" as const,
-    voltage: 230, current: 2.1, power: 483, energy: 5.7,
-    on: true, autoControl: true, costPerHour: 0.06, powerFactor: 0.97,
+    id: "DEV-003", name: "Table Fan", status: "normal" as const,
+    voltage: 228, current: 0.5, power: 114, energy: 3.2,
+    on: true, autoControl: true, costPerHour: 0.01, powerFactor: 0.95,
   },
 ];
 
