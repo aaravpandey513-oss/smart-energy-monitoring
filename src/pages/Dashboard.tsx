@@ -192,9 +192,9 @@ export default function Dashboard() {
                 <XAxis dataKey="time" tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
                 <YAxis tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey="motor" stroke="hsl(224,76%,48%)" strokeWidth={2} dot={false} name="Motor" />
-                <Line type="monotone" dataKey="ac" stroke="hsl(142,71%,45%)" strokeWidth={2} dot={false} name="AC" />
-                <Line type="monotone" dataKey="lights" stroke="hsl(38,92%,50%)" strokeWidth={2} dot={false} name="Lights" />
+                <Line type="monotone" dataKey="bulb" stroke="hsl(224,76%,48%)" strokeWidth={2} dot={false} name="Bulb" />
+                <Line type="monotone" dataKey="straightener" stroke="hsl(142,71%,45%)" strokeWidth={2} dot={false} name="Hair Straightener" />
+                <Line type="monotone" dataKey="fan" stroke="hsl(38,92%,50%)" strokeWidth={2} dot={false} name="Table Fan" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
