@@ -19,22 +19,22 @@ export default function SettingsPage() {
         <CardContent className="space-y-4">
           <div className="flex items-center gap-4">
             <div className="h-16 w-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xl font-bold">
-              JD
+              AP
             </div>
             <div>
-              <p className="font-semibold">John Doe</p>
-              <p className="text-sm text-muted-foreground">john@example.com</p>
+              <p className="font-semibold">Aarav Pandey</p>
+              <p className="text-sm text-muted-foreground">System Developer</p>
             </div>
           </div>
           <Separator />
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Full Name</Label>
-              <Input defaultValue="John Doe" className="rounded-xl" />
+              <Input defaultValue="Aarav Pandey" className="rounded-xl" />
             </div>
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input defaultValue="john@example.com" className="rounded-xl" />
+              <Label>Role</Label>
+              <Input defaultValue="System Developer" className="rounded-xl" />
             </div>
           </div>
           <Button className="rounded-xl">Save Changes</Button>
