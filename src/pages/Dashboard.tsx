@@ -14,44 +14,44 @@ import {
 
 /* ── static data ── */
 const energyTimeline = [
-  { time: "06:00", motor: 1.2, ac: 0.8, lights: 0.3 },
-  { time: "08:00", motor: 2.4, ac: 1.5, lights: 0.5 },
-  { time: "10:00", motor: 3.1, ac: 2.2, lights: 0.4 },
-  { time: "12:00", motor: 2.8, ac: 3.0, lights: 0.6 },
-  { time: "14:00", motor: 3.5, ac: 3.4, lights: 0.5 },
-  { time: "16:00", motor: 2.9, ac: 2.8, lights: 0.7 },
-  { time: "18:00", motor: 1.8, ac: 2.0, lights: 1.2 },
-  { time: "20:00", motor: 0.6, ac: 1.4, lights: 1.5 },
+  { time: "06:00", bulb: 0.3, straightener: 0.0, fan: 0.1 },
+  { time: "08:00", bulb: 0.5, straightener: 1.5, fan: 0.2 },
+  { time: "10:00", bulb: 0.4, straightener: 0.0, fan: 0.4 },
+  { time: "12:00", bulb: 0.6, straightener: 0.0, fan: 0.5 },
+  { time: "14:00", bulb: 0.5, straightener: 1.8, fan: 0.6 },
+  { time: "16:00", bulb: 0.7, straightener: 0.0, fan: 0.5 },
+  { time: "18:00", bulb: 1.2, straightener: 1.2, fan: 0.3 },
+  { time: "20:00", bulb: 1.5, straightener: 0.0, fan: 0.2 },
 ];
 
 const comparisonData = [
-  { name: "Motor", energy: 18.3 },
-  { name: "AC", energy: 17.1 },
-  { name: "Lights", energy: 5.7 },
+  { name: "Bulb", energy: 5.7 },
+  { name: "Hair Straightener", energy: 4.5 },
+  { name: "Table Fan", energy: 3.2 },
 ];
 
 const alerts = [
-  { id: 1, type: "warning" as const, message: "Motor – Load 1 exceeded 3 kW threshold", time: "14:02" },
-  { id: 2, type: "danger" as const, message: "Air Conditioner fault detected: compressor overload", time: "12:45" },
+  { id: 1, type: "warning" as const, message: "Hair Straightener exceeded 1.8 kW threshold", time: "14:02" },
+  { id: 2, type: "danger" as const, message: "Hair Straightener fault detected: overheating", time: "12:45" },
   { id: 3, type: "warning" as const, message: "Monthly budget usage at 78%", time: "10:30" },
-  { id: 4, type: "danger" as const, message: "Lighting System flickering — check wiring", time: "09:15" },
+  { id: 4, type: "danger" as const, message: "Bulb flickering — check wiring", time: "09:15" },
 ];
 
 const initialDevices = [
   {
-    id: "DEV-001", name: "Motor – Load 1", status: "normal" as const,
-    voltage: 228, current: 14.2, power: 3240, energy: 18.3,
-    on: true, autoControl: false, costPerHour: 0.42, powerFactor: 0.92,
+    id: "DEV-001", name: "Bulb", status: "normal" as const,
+    voltage: 230, current: 0.4, power: 92, energy: 5.7,
+    on: true, autoControl: false, costPerHour: 0.01, powerFactor: 0.97,
   },
   {
-    id: "DEV-002", name: "Air Conditioner", status: "warning" as const,
-    voltage: 225, current: 8.6, power: 1935, energy: 17.1,
-    on: true, autoControl: true, costPerHour: 0.25, powerFactor: 0.88,
+    id: "DEV-002", name: "Hair Straightener", status: "warning" as const,
+    voltage: 225, current: 8.0, power: 1800, energy: 4.5,
+    on: true, autoControl: true, costPerHour: 0.23, powerFactor: 0.88,
   },
   {
-    id: "DEV-003", name: "Lighting System", status: "normal" as const,
-    voltage: 230, current: 2.1, power: 483, energy: 5.7,
-    on: true, autoControl: true, costPerHour: 0.06, powerFactor: 0.97,
+    id: "DEV-003", name: "Table Fan", status: "normal" as const,
+    voltage: 228, current: 0.5, power: 114, energy: 3.2,
+    on: true, autoControl: true, costPerHour: 0.01, powerFactor: 0.95,
   },
 ];
 
@@ -192,9 +192,9 @@ export default function Dashboard() {
                 <XAxis dataKey="time" tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
                 <YAxis tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey="motor" stroke="hsl(224,76%,48%)" strokeWidth={2} dot={false} name="Motor" />
-                <Line type="monotone" dataKey="ac" stroke="hsl(142,71%,45%)" strokeWidth={2} dot={false} name="AC" />
-                <Line type="monotone" dataKey="lights" stroke="hsl(38,92%,50%)" strokeWidth={2} dot={false} name="Lights" />
+                <Line type="monotone" dataKey="bulb" stroke="hsl(224,76%,48%)" strokeWidth={2} dot={false} name="Bulb" />
+                <Line type="monotone" dataKey="straightener" stroke="hsl(142,71%,45%)" strokeWidth={2} dot={false} name="Hair Straightener" />
+                <Line type="monotone" dataKey="fan" stroke="hsl(38,92%,50%)" strokeWidth={2} dot={false} name="Table Fan" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>

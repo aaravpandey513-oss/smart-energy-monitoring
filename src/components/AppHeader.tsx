@@ -29,10 +29,13 @@ export function AppHeader() {
           <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive" />
         </Button>
         <div className="flex items-center gap-2 ml-2">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">
-            JD
-          </div>
-          <span className="hidden lg:block text-sm font-medium">John Doe</span>
+          <span className="hidden lg:flex items-center gap-2 text-sm font-medium">
+            Smart Energy Monitoring System
+            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
+              LIVE
+            </span>
+          </span>
         </div>
       </div>
     </header>
