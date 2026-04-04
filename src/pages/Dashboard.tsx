@@ -31,10 +31,10 @@ const comparisonData = [
 ];
 
 const alerts = [
-  { id: 1, type: "warning" as const, message: "Motor – Load 1 exceeded 3 kW threshold", time: "14:02" },
-  { id: 2, type: "danger" as const, message: "Air Conditioner fault detected: compressor overload", time: "12:45" },
+  { id: 1, type: "warning" as const, message: "Hair Straightener exceeded 1.8 kW threshold", time: "14:02" },
+  { id: 2, type: "danger" as const, message: "Hair Straightener fault detected: overheating", time: "12:45" },
   { id: 3, type: "warning" as const, message: "Monthly budget usage at 78%", time: "10:30" },
-  { id: 4, type: "danger" as const, message: "Lighting System flickering — check wiring", time: "09:15" },
+  { id: 4, type: "danger" as const, message: "Bulb flickering — check wiring", time: "09:15" },
 ];
 
 const initialDevices = [
