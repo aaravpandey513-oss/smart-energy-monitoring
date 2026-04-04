@@ -14,14 +14,14 @@ import {
 
 /* ── static data ── */
 const energyTimeline = [
-  { time: "06:00", motor: 1.2, ac: 0.8, lights: 0.3 },
-  { time: "08:00", motor: 2.4, ac: 1.5, lights: 0.5 },
-  { time: "10:00", motor: 3.1, ac: 2.2, lights: 0.4 },
-  { time: "12:00", motor: 2.8, ac: 3.0, lights: 0.6 },
-  { time: "14:00", motor: 3.5, ac: 3.4, lights: 0.5 },
-  { time: "16:00", motor: 2.9, ac: 2.8, lights: 0.7 },
-  { time: "18:00", motor: 1.8, ac: 2.0, lights: 1.2 },
-  { time: "20:00", motor: 0.6, ac: 1.4, lights: 1.5 },
+  { time: "06:00", bulb: 0.3, straightener: 0.0, fan: 0.1 },
+  { time: "08:00", bulb: 0.5, straightener: 1.5, fan: 0.2 },
+  { time: "10:00", bulb: 0.4, straightener: 0.0, fan: 0.4 },
+  { time: "12:00", bulb: 0.6, straightener: 0.0, fan: 0.5 },
+  { time: "14:00", bulb: 0.5, straightener: 1.8, fan: 0.6 },
+  { time: "16:00", bulb: 0.7, straightener: 0.0, fan: 0.5 },
+  { time: "18:00", bulb: 1.2, straightener: 1.2, fan: 0.3 },
+  { time: "20:00", bulb: 1.5, straightener: 0.0, fan: 0.2 },
 ];
 
 const comparisonData = [
