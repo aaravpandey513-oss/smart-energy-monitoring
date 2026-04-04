@@ -1,59 +1,177 @@
-import { Zap, DollarSign, Cpu, Power, TrendingDown, TrendingUp } from "lucide-react";
+import { useState } from "react";
+import {
+  Zap, DollarSign, Clock, CheckCircle, AlertTriangle, XCircle,
+  TrendingUp, Activity, Gauge, RefreshCw,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Area, AreaChart,
+  ResponsiveContainer,
 } from "recharts";
 
-const energyData = [
-  { time: "00:00", usage: 2.1 }, { time: "04:00", usage: 1.4 },
-  { time: "08:00", usage: 3.8 }, { time: "12:00", usage: 5.2 },
-  { time: "16:00", usage: 4.6 }, { time: "20:00", usage: 6.1 },
-  { time: "23:59", usage: 3.2 },
+/* ── static data ── */
+const energyTimeline = [
+  { time: "06:00", motor: 1.2, ac: 0.8, lights: 0.3 },
+  { time: "08:00", motor: 2.4, ac: 1.5, lights: 0.5 },
+  { time: "10:00", motor: 3.1, ac: 2.2, lights: 0.4 },
+  { time: "12:00", motor: 2.8, ac: 3.0, lights: 0.6 },
+  { time: "14:00", motor: 3.5, ac: 3.4, lights: 0.5 },
+  { time: "16:00", motor: 2.9, ac: 2.8, lights: 0.7 },
+  { time: "18:00", motor: 1.8, ac: 2.0, lights: 1.2 },
+  { time: "20:00", motor: 0.6, ac: 1.4, lights: 1.5 },
 ];
 
-const applianceData = [
-  { name: "AC", usage: 45 }, { name: "Heater", usage: 30 },
-  { name: "Fridge", usage: 15 }, { name: "Washer", usage: 8 },
-  { name: "Lights", usage: 5 }, { name: "TV", usage: 4 },
+const comparisonData = [
+  { name: "Motor", energy: 18.3 },
+  { name: "AC", energy: 17.1 },
+  { name: "Lights", energy: 5.7 },
 ];
 
-const statCards = [
-  { title: "Total Usage", value: "284 kWh", change: "+12%", icon: Zap, trend: TrendingUp, color: "text-primary" },
-  { title: "Est. Cost", value: "$47.20", change: "-5%", icon: DollarSign, trend: TrendingDown, color: "text-success" },
-  { title: "Active Devices", value: "12", change: "+2", icon: Cpu, trend: TrendingUp, color: "text-warning" },
+const alerts = [
+  { id: 1, type: "warning" as const, message: "Motor – Load 1 exceeded 3 kW threshold", time: "14:02" },
+  { id: 2, type: "danger" as const, message: "Air Conditioner fault detected: compressor overload", time: "12:45" },
+  { id: 3, type: "warning" as const, message: "Monthly budget usage at 78%", time: "10:30" },
+  { id: 4, type: "danger" as const, message: "Lighting System flickering — check wiring", time: "09:15" },
 ];
+
+const initialDevices = [
+  {
+    id: "DEV-001", name: "Motor – Load 1", status: "normal" as const,
+    voltage: 228, current: 14.2, power: 3240, energy: 18.3,
+    on: true, autoControl: false, costPerHour: 0.42, powerFactor: 0.92,
+  },
+  {
+    id: "DEV-002", name: "Air Conditioner", status: "warning" as const,
+    voltage: 225, current: 8.6, power: 1935, energy: 17.1,
+    on: true, autoControl: true, costPerHour: 0.25, powerFactor: 0.88,
+  },
+  {
+    id: "DEV-003", name: "Lighting System", status: "normal" as const,
+    voltage: 230, current: 2.1, power: 483, energy: 5.7,
+    on: true, autoControl: true, costPerHour: 0.06, powerFactor: 0.97,
+  },
+];
+
+/* ── tooltip style ── */
+const tooltipStyle = {
+  backgroundColor: "hsl(var(--card))",
+  border: "1px solid hsl(var(--border))",
+  borderRadius: "0.5rem",
+  color: "hsl(var(--foreground))",
+  fontSize: "0.75rem",
+};
 
 export default function Dashboard() {
+  const [devices, setDevices] = useState(initialDevices);
+
+  const totalPower = devices.reduce((s, d) => s + (d.on ? d.power : 0), 0);
+  const totalCost = devices.reduce((s, d) => s + (d.on ? d.costPerHour : 0), 0);
+  const totalRuntime = devices.filter((d) => d.on).length * 8.5;
+  const budgetUsed = 78;
+
+  const toggleDevice = (id: string) =>
+    setDevices((prev) => prev.map((d) => (d.id === id ? { ...d, on: !d.on } : d)));
+
+  const toggleAuto = (id: string) =>
+    setDevices((prev) => prev.map((d) => (d.id === id ? { ...d, autoControl: !d.autoControl } : d)));
+
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl lg:text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Monitor your home energy in real-time</p>
-        </div>
-        <Button variant="destructive" className="rounded-xl gap-2 w-fit">
-          <Power className="h-4 w-4" /> Turn All OFF
-        </Button>
+      {/* Page Header */}
+      <div>
+        <h1 className="text-2xl lg:text-3xl font-bold text-foreground">Energy Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">Real-time monitoring & control for 3 devices</p>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards.map((stat) => (
-          <Card key={stat.title} className="rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
+      {/* ── 1. Summary Cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Total Power", value: `${totalPower.toLocaleString()} W`, icon: Zap, accent: "text-primary" },
+          { label: "Cost Today", value: `$${(totalCost * 8.5).toFixed(2)}`, icon: DollarSign, accent: "text-success" },
+          { label: "Total Runtime", value: `${totalRuntime.toFixed(1)} hrs`, icon: Clock, accent: "text-muted-foreground" },
+          { label: "System Status", value: "Normal", icon: CheckCircle, accent: "text-success" },
+        ].map((s) => (
+          <Card key={s.label} className="shadow-sm hover:shadow transition-shadow">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                <s.icon className={`h-5 w-5 ${s.accent}`} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground truncate">{s.label}</p>
+                <p className="text-lg font-bold text-foreground leading-tight">{s.value}</p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* ── 2. Device Cards ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {devices.map((device) => (
+          <Card key={device.id} className="shadow-sm hover:shadow transition-shadow">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">{stat.title}</p>
-                  <p className="text-2xl font-bold mt-1">{stat.value}</p>
-                  <div className="flex items-center gap-1 mt-1">
-                    <stat.trend className={`h-3 w-3 ${stat.color}`} />
-                    <span className={`text-xs font-medium ${stat.color}`}>{stat.change}</span>
+                  <CardTitle className="text-sm font-semibold">{device.name}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-0.5">{device.id}</p>
+                </div>
+                <Badge
+                  variant={device.status === "normal" ? "secondary" : "outline"}
+                  className={
+                    device.status === "warning"
+                      ? "border-warning text-warning bg-warning/10"
+                      : "bg-success/10 text-success border-success"
+                  }
+                >
+                  {device.status === "normal" ? "Normal" : "Warning"}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Metrics */}
+              <div className="grid grid-cols-2 gap-3">
+                <Metric label="Voltage" value={`${device.voltage} V`} />
+                <Metric label="Current" value={`${device.current} A`} />
+                <div className="col-span-2 bg-primary/5 rounded-lg p-3 text-center">
+                  <p className="text-xs text-muted-foreground">Power</p>
+                  <p className="text-2xl font-bold text-primary">{device.on ? `${device.power} W` : "0 W"}</p>
+                </div>
+                <Metric label="Energy Today" value={`${device.energy} kWh`} />
+                <Metric label="Power Factor" value={device.powerFactor.toFixed(2)} />
+              </div>
+
+              {/* Controls */}
+              <div className="border-t pt-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-foreground">Power</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-medium ${device.on ? "text-success" : "text-muted-foreground"}`}>
+                      {device.on ? "Running" : "OFF"}
+                    </span>
+                    <Switch checked={device.on} onCheckedChange={() => toggleDevice(device.id)} />
                   </div>
                 </div>
-                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <stat.icon className="h-6 w-6 text-primary" />
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-foreground">Auto Control</span>
+                  <Switch checked={device.autoControl} onCheckedChange={() => toggleAuto(device.id)} />
+                </div>
+              </div>
+
+              {/* Insights */}
+              <div className="border-t pt-3 space-y-2">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Cost / hr</span>
+                  <span className="font-medium text-foreground">${device.on ? device.costPerHour.toFixed(2) : "0.00"}</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Budget Used</span>
+                    <span className="font-medium text-foreground">{budgetUsed}%</span>
+                  </div>
+                  <Progress value={budgetUsed} className="h-1.5" />
                 </div>
               </div>
             </CardContent>
@@ -61,62 +179,123 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Charts */}
+      {/* ── 3. Charts ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card className="rounded-2xl shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-base">Energy Usage Over Time</CardTitle>
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold">Energy Over Time (kWh)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
-              <AreaChart data={energyData}>
-                <defs>
-                  <linearGradient id="colorUsage" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(224, 76%, 48%)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(224, 76%, 48%)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
+            <ResponsiveContainer width="100%" height={260}>
+              <LineChart data={energyTimeline}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="time" className="text-xs" tick={{ fill: "hsl(220, 9%, 46%)" }} />
-                <YAxis className="text-xs" tick={{ fill: "hsl(220, 9%, 46%)" }} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "0.75rem",
-                    color: "hsl(var(--foreground))",
-                  }}
-                />
-                <Area type="monotone" dataKey="usage" stroke="hsl(224, 76%, 48%)" fill="url(#colorUsage)" strokeWidth={2} />
-              </AreaChart>
+                <XAxis dataKey="time" tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
+                <YAxis tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Line type="monotone" dataKey="motor" stroke="hsl(224,76%,48%)" strokeWidth={2} dot={false} name="Motor" />
+                <Line type="monotone" dataKey="ac" stroke="hsl(142,71%,45%)" strokeWidth={2} dot={false} name="AC" />
+                <Line type="monotone" dataKey="lights" stroke="hsl(38,92%,50%)" strokeWidth={2} dot={false} name="Lights" />
+              </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-base">Appliance Consumption</CardTitle>
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold">Device Comparison (kWh Today)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={applianceData}>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={comparisonData}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="name" className="text-xs" tick={{ fill: "hsl(220, 9%, 46%)" }} />
-                <YAxis className="text-xs" tick={{ fill: "hsl(220, 9%, 46%)" }} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "0.75rem",
-                    color: "hsl(var(--foreground))",
-                  }}
-                />
-                <Bar dataKey="usage" fill="hsl(160, 60%, 45%)" radius={[6, 6, 0, 0]} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
+                <YAxis tick={{ fontSize: 11, fill: "hsl(220,9%,46%)" }} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Bar dataKey="energy" fill="hsl(224,76%,48%)" radius={[4, 4, 0, 0]} barSize={48} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
+
+      {/* ── 4. Insights Summary + Alerts ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Insights */}
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold">System Insights</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <InsightRow icon={DollarSign} label="Avg Cost / hr" value={`$${(totalCost / 3).toFixed(2)}`} />
+            <InsightRow icon={Gauge} label="Avg Power Factor" value="0.92" />
+            <InsightRow icon={Activity} label="Peak Power" value="5,658 W" />
+            <InsightRow icon={RefreshCw} label="Data Refresh" value="5 sec" />
+            <div className="pt-2 space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Monthly Budget</span>
+                <span className="font-medium text-foreground">{budgetUsed}%</span>
+              </div>
+              <Progress value={budgetUsed} className="h-2" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Alerts */}
+        <Card className="shadow-sm lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold">Recent Alerts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {alerts.map((a) => (
+                <div key={a.id} className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/50">
+                  {a.type === "warning" ? (
+                    <AlertTriangle className="h-4 w-4 text-warning shrink-0 mt-0.5" />
+                  ) : (
+                    <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-foreground">{a.message}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{a.time}</p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={
+                      a.type === "warning"
+                        ? "border-warning text-warning text-xs"
+                        : "border-destructive text-destructive text-xs"
+                    }
+                  >
+                    {a.type === "warning" ? "Warning" : "Fault"}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+/* ── small helpers ── */
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-muted/50 rounded-lg p-2.5 text-center">
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</p>
+      <p className="text-sm font-semibold text-foreground mt-0.5">{value}</p>
+    </div>
+  );
+}
+
+function InsightRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="text-xs text-muted-foreground">{label}</span>
+      </div>
+      <span className="text-xs font-semibold text-foreground">{value}</span>
     </div>
   );
 }
