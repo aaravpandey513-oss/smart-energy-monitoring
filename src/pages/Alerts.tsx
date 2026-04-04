@@ -2,11 +2,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangle, Info, Zap, Cpu } from "lucide-react";
 
 const alerts = [
-  { id: 1, type: "warning", icon: AlertTriangle, title: "High energy usage detected", desc: "Your AC consumed 40% more energy than usual today.", time: "2 hours ago" },
-  { id: 2, type: "danger", icon: Zap, title: "Power surge warning", desc: "A sudden spike was detected on the main circuit.", time: "5 hours ago" },
-  { id: 3, type: "info", icon: Cpu, title: "Device offline", desc: "Smart Speaker in Living Room went offline.", time: "1 day ago" },
+  { id: 1, type: "warning", icon: AlertTriangle, title: "High energy usage detected", desc: "Hair Straightener consumed 40% more energy than usual today.", time: "2 hours ago" },
+  { id: 2, type: "danger", icon: Zap, title: "Power surge warning", desc: "A sudden spike was detected on the Bulb circuit.", time: "5 hours ago" },
+  { id: 3, type: "info", icon: Cpu, title: "Device offline", desc: "Table Fan went offline.", time: "1 day ago" },
   { id: 4, type: "warning", icon: AlertTriangle, title: "Monthly budget exceeded", desc: "You've exceeded your energy budget by $12.50.", time: "2 days ago" },
-  { id: 5, type: "info", icon: Info, title: "Firmware update available", desc: "Water Heater has a new firmware update ready.", time: "3 days ago" },
+  { id: 5, type: "info", icon: Info, title: "Firmware update available", desc: "Table Fan has a new firmware update ready.", time: "3 days ago" },
 ];
 
 const typeStyles: Record<string, string> = {

@@ -3,20 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  AirVent, Refrigerator, Tv, WashingMachine, Lightbulb, Fan,
-  Heater, Speaker, Search, Power,
-} from "lucide-react";
+import { Lightbulb, Fan, Flame, Search, Power } from "lucide-react";
 
 const initialDevices = [
-  { id: 1, name: "Living Room AC", icon: AirVent, on: true, power: "1.2 kW", room: "Living Room" },
-  { id: 2, name: "Kitchen Fridge", icon: Refrigerator, on: true, power: "0.15 kW", room: "Kitchen" },
-  { id: 3, name: "Bedroom TV", icon: Tv, on: false, power: "0 kW", room: "Bedroom" },
-  { id: 4, name: "Washing Machine", icon: WashingMachine, on: true, power: "0.5 kW", room: "Laundry" },
-  { id: 5, name: "Hallway Lights", icon: Lightbulb, on: true, power: "0.06 kW", room: "Hallway" },
-  { id: 6, name: "Office Fan", icon: Fan, on: false, power: "0 kW", room: "Office" },
-  { id: 7, name: "Water Heater", icon: Heater, on: true, power: "2.0 kW", room: "Bathroom" },
-  { id: 8, name: "Smart Speaker", icon: Speaker, on: true, power: "0.01 kW", room: "Living Room" },
+  { id: 1, name: "Bulb", icon: Lightbulb, on: true, power: "0.09 kW", room: "Room 1" },
+  { id: 2, name: "Hair Straightener", icon: Flame, on: true, power: "1.8 kW", room: "Room 2" },
+  { id: 3, name: "Table Fan", icon: Fan, on: true, power: "0.11 kW", room: "Room 3" },
 ];
 
 export default function Devices() {
