@@ -25,9 +25,9 @@ const energyTimeline = [
 ];
 
 const comparisonData = [
-  { name: "Motor", energy: 18.3 },
-  { name: "AC", energy: 17.1 },
-  { name: "Lights", energy: 5.7 },
+  { name: "Bulb", energy: 5.7 },
+  { name: "Hair Straightener", energy: 4.5 },
+  { name: "Table Fan", energy: 3.2 },
 ];
 
 const alerts = [
