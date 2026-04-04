@@ -228,7 +228,7 @@ export default function Dashboard() {
           <CardContent className="space-y-3">
             <InsightRow icon={DollarSign} label="Avg Cost / hr" value={`$${(totalCost / 3).toFixed(2)}`} />
             <InsightRow icon={Gauge} label="Avg Power Factor" value="0.92" />
-            <InsightRow icon={Activity} label="Peak Power" value="5,658 W" />
+            <InsightRow icon={Activity} label="Peak Power" value="2,006 W" />
             <InsightRow icon={RefreshCw} label="Data Refresh" value="5 sec" />
             <div className="pt-2 space-y-1">
               <div className="flex justify-between text-xs">
