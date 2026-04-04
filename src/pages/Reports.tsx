@@ -22,9 +22,9 @@ const monthlyData = [
 ];
 
 const tips = [
-  { icon: Lightbulb, text: "Switch to LED bulbs to save up to 75% on lighting costs." },
-  { icon: TrendingDown, text: "Your AC runs 3h more than average — try scheduling it." },
-  { icon: Lightbulb, text: "Unplug idle devices to eliminate phantom energy drain." },
+  { icon: Lightbulb, text: "Switch to LED Bulbs to save up to 75% on lighting costs." },
+  { icon: TrendingDown, text: "Hair Straightener runs 3h more than average — try scheduling it." },
+  { icon: Lightbulb, text: "Turn off Table Fan when not in the room to reduce waste." },
 ];
 
 export default function Reports() {
